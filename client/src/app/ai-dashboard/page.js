@@ -10,6 +10,7 @@ import {
   ResponsiveContainer, AreaChart, Area
 } from 'recharts';
 import { toast, Toaster } from 'react-hot-toast';
+import { AI_BASE_URL } from '@/config/api';
 
 export default function AIDashboard() {
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ export default function AIDashboard() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5001/analyze', {
+      const res = await fetch(`${AI_BASE_URL}/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

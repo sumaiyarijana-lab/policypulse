@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import toast, { Toaster } from 'react-hot-toast';
 import { AlertTriangle, Info, ShieldAlert, Activity } from 'lucide-react';
+import { SOCKET_URL } from '@/config/api';
 
 const NotificationContext = createContext();
 
@@ -14,7 +15,7 @@ export const NotificationProvider = ({ children }) => {
 
   useEffect(() => {
     // Connect to Socket.IO backend
-    const newSocket = io('http://localhost:5000', {
+    const newSocket = io(SOCKET_URL, {
       withCredentials: true,
       transports: ['polling', 'websocket'],
       reconnection: true,

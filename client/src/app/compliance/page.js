@@ -6,6 +6,7 @@ import {
   XCircle, BarChart3, Database, Building2, Send, 
   Activity, Map as MapIcon, RotateCcw, Cpu, ListCollapse
 } from 'lucide-react';
+import { API_BASE_URL, AI_BASE_URL } from '@/config/api';
 
 export default function ComplianceEnginePage() {
   const [disposalForm, setDisposalForm] = useState({
@@ -36,7 +37,7 @@ export default function ComplianceEnginePage() {
     
     try {
       // 1. Run compliance checks through advanced Python AI regulation matrix
-      const aiRes = await fetch('http://localhost:5001/compliance', {
+      const aiRes = await fetch(`${AI_BASE_URL}/compliance`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -82,7 +83,7 @@ export default function ComplianceEnginePage() {
             complaintData.append('recyclerId', disposalForm.recyclerId);
             complaintData.append('isAuthorized', disposalForm.isAuthorized);
             
-            await fetch('http://localhost:5000/api/complaints', {
+            await fetch(`${API_BASE_URL}/complaints`, {
               method: 'POST',
               body: complaintData
             });

@@ -17,6 +17,7 @@ import {
 } from 'recharts';
 import { useNotification } from '@/context/NotificationContext';
 import toast from 'react-hot-toast';
+import { API_BASE_URL, AI_BASE_URL } from '@/config/api';
 
 // Dynamically import LiveMap with SSR disabled to prevent Leaflet window reference errors
 const LiveMap = dynamic(() => import('@/components/map/LiveMap'), {
@@ -84,7 +85,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       // 1. Fetch complaints from standard Express Backend
-      const resComplaints = await fetch('http://localhost:5000/api/complaints');
+      const resComplaints = await fetch(`${API_BASE_URL}/complaints`);
       let complaintsData = [];
       if (resComplaints.ok) {
         complaintsData = await resComplaints.json();
@@ -92,7 +93,7 @@ export default function AdminDashboard() {
       }
       
       // 2. Fetch area metrics from Python AI microservice
-      const resMetrics = await fetch('http://localhost:5001/metrics');
+      const resMetrics = await fetch(`${AI_BASE_URL}/metrics`);
       if (resMetrics.ok) {
         const metricsData = await resMetrics.json();
         setAreaMetrics(metricsData);
@@ -102,14 +103,14 @@ export default function AdminDashboard() {
       }
       
       // 3. Fetch predictions from AI microservice
-      const resPred = await fetch('http://localhost:5001/predictions');
+      const resPred = await fetch(`${AI_BASE_URL}/predictions`);
       if (resPred.ok) {
         const predData = await resPred.json();
         setPredictions(predData);
       }
       
       // 4. Fetch AI system diagnostics
-      const resStatus = await fetch('http://localhost:5001/system-status');
+      const resStatus = await fetch(`${AI_BASE_URL}/system-status`);
       if (resStatus.ok) {
         const statusData = await resStatus.json();
         setSystemStatus(statusData);
@@ -189,7 +190,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setAuditing(true);
     try {
-      const res = await fetch('http://localhost:5001/compliance', {
+      const res = await fetch(`${AI_BASE_URL}/compliance`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

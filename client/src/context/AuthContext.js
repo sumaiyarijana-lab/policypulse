@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/config/api';
 
 const AuthContext = createContext();
 
@@ -11,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async (token) => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/me', {
+      const res = await fetch(`${API_BASE_URL}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -36,10 +37,8 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-
-
   const login = async (email, password, isAdmin = false) => {
-    const url = isAdmin ? 'http://localhost:5000/api/auth/admin/login' : 'http://localhost:5000/api/auth/login';
+    const url = isAdmin ? `${API_BASE_URL}/auth/admin/login` : `${API_BASE_URL}/auth/login`;
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -61,7 +60,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)

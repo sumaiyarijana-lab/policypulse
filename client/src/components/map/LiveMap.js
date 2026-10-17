@@ -6,6 +6,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { io } from 'socket.io-client';
 import { toast, Toaster } from 'react-hot-toast';
+import { API_BASE_URL, SOCKET_URL, SERVER_URL } from '@/config/api';
 
 // ── Fallback Mock Data in case DB is Empty/Unavailable ──────────
 const MOCK_COMPLAINTS_FALLBACK = [
@@ -278,7 +279,7 @@ export default function LiveMap({
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/complaints/public');
+        const res = await fetch(`${API_BASE_URL}/complaints/public`);
         if (res.ok) {
           const data = await res.json();
           // Merge with mock fallback to ensure map is beautifully populated
@@ -303,7 +304,7 @@ export default function LiveMap({
     fetchComplaints();
 
     // Setup Socket.IO subscription
-    const socket = io('http://localhost:5000', {
+    const socket = io(SOCKET_URL, {
       transports: ['websocket'],
       autoConnect: true
     });
@@ -549,7 +550,7 @@ export default function LiveMap({
             {c.evidence && c.evidence.length > 0 ? (
               <div className="mb-2.5 rounded-lg overflow-hidden border border-white/10 max-h-[110px] bg-black/40">
                 <img 
-                  src={`http://localhost:5000${c.evidence[0]}`} 
+                  src={`${SERVER_URL}${c.evidence[0]}`} 
                   alt="Evidence image"
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}

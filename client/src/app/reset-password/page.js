@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Lock, Shield, ArrowRight } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { Sun, Moon } from 'lucide-react';
+import { API_BASE_URL } from '@/config/api';
 
 function ResetPasswordForm() {
   const [password, setPassword] = useState('');
@@ -41,7 +42,7 @@ function ResetPasswordForm() {
     setStatus({ type: '', message: '' });
     
     try {
-      const res = await fetch('http://localhost:5000/api/auth/reset-password', {
+      const res = await fetch(`${API_BASE_URL}/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, password })

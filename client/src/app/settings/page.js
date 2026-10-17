@@ -9,6 +9,7 @@ import {
   Volume2, Sliders, Moon, Sun, Check, AlertTriangle, Eye, ChevronRight
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { API_BASE_URL } from '@/config/api';
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState('Profile');
@@ -198,7 +199,7 @@ export default function SettingsPage() {
         }
       };
 
-      const res = await fetch('http://localhost:5000/api/auth/profile', {
+      const res = await fetch(`${API_BASE_URL}/auth/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

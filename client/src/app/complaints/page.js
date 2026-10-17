@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import { API_BASE_URL } from '@/config/api';
 
 export default function ComplaintRegistrationPage() {
   const { user } = useAuth();
@@ -160,7 +161,7 @@ export default function ComplaintRegistrationPage() {
       const headers = {};
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const res = await fetch('http://localhost:5000/api/complaints', {
+      const res = await fetch(`${API_BASE_URL}/complaints`, {
         method: 'POST',
         headers,
         body: submitData
