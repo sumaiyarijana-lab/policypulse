@@ -45,7 +45,9 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('combined'));
 }
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    callback(null, true);
+  },
   credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -97,7 +99,7 @@ const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: (origin, callback) => callback(null, true),
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   }
@@ -115,3 +117,18 @@ io.on('connection', (socket) => {
 server.listen(PORT, () => {
   console.log(`🚀 PolicyPulse API running on http://localhost:${PORT}`);
 });
+
+// Start AI Neural Microservice on Port 5001
+const aiApp = require('./aiService');
+const AI_PORT = process.env.AI_PORT || 5001;
+const aiServer = aiApp.listen(AI_PORT, () => {
+  console.log(`🤖 PolicyPulse AI Neural Engine running on http://localhost:${AI_PORT}`);
+});
+aiServer.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`ℹ️ Port ${AI_PORT} already running (external AI service detected).`);
+  } else {
+    console.error('AI Service Error:', err.message);
+  }
+});
+

@@ -36,4 +36,23 @@ const authorize = (...roles) => {
   };
 };
 
-module.exports = { protect, authorize };
+// Optional protect: attaches user if token is valid, doesn't block if not
+const optionalProtect = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id);
+      if (user && user.isActive) {
+        req.user = { id: user._id, role: user.role, email: user.email };
+      }
+    }
+  } catch (err) {
+    // Continue without user
+  }
+  next();
+};
+
+module.exports = { protect, authorize, optionalProtect };
+

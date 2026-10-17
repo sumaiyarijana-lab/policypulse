@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node start-dev.js",
+    "ddev": "node start-dev.js",
     "dev:client": "npm run dev --prefix client",
     "dev:server": "npm run dev --prefix server",
     "start:client": "npm start --prefix client",

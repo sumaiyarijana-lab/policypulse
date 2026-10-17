@@ -380,7 +380,15 @@ export default function MapPage() {
                   mapMode === 'street' ? 'bg-teal-500 text-white shadow-md' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
                 }`}
               >
-                Street/Dark
+                Street Map
+              </button>
+              <button
+                onClick={() => setMapMode('dark')}
+                className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all text-left ${
+                  mapMode === 'dark' ? 'bg-teal-500 text-white shadow-md' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                }`}
+              >
+                Dark Radar
               </button>
               <button
                 onClick={() => setMapMode('satellite')}

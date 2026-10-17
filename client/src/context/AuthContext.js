@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
         router.push('/dashboard');
         return { success: true };
       }
-      return { success: false, message: data.message || 'Login failed' };
+      return { success: false, message: data.message || (data.errors && data.errors[0]?.msg) || 'Login failed' };
     } catch (err) {
       return { success: false, message: 'Server error. Please try again later.' };
     }
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
         router.push('/dashboard');
         return { success: true };
       }
-      return { success: false, message: data.message || 'Registration failed' };
+      return { success: false, message: data.message || (data.errors && data.errors[0]?.msg) || 'Registration failed' };
     } catch (err) {
       return { success: false, message: 'Server error. Please try again later.' };
     }

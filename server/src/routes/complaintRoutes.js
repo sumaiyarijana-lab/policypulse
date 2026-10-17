@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const { createComplaint, getComplaints, getPublicComplaints } = require('../controllers/complaintController');
-const { protect, authorize } = require('../middleware/auth');
+const { protect, authorize, optionalProtect } = require('../middleware/auth');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -30,8 +30,17 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
-router.post('/', protect, upload.array('evidence', 5), createComplaint);
+router.post('/', optionalProtect, upload.array('evidence', 5), createComplaint);
 router.get('/public', getPublicComplaints);
-router.get('/', protect, authorize('admin', 'officer'), getComplaints);
+router.get('/', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return protect(req, res, () => {
+      return getComplaints(req, res);
+    });
+  }
+  return getPublicComplaints(req, res);
+});
 
 module.exports = router;
+

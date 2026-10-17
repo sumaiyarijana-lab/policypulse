@@ -3,6 +3,7 @@ const path = require('path');
 
 console.log('🚀 Starting PolicyPulse Development Environment...');
 console.log('🔹 Backend Server: http://localhost:5000');
+console.log('🔹 AI Neural Engine: http://localhost:5001');
 console.log('🔹 Frontend Client: http://localhost:3000\n');
 
 const isWin = process.platform === 'win32';
